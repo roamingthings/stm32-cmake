@@ -159,6 +159,28 @@ ELSEIF(STM32_FAMILY STREQUAL "L0")
     SET(HAL_SRCS
         stm32l0xx_hal.c
     )
+ELSEIF(STM32_FAMILY STREQUAL "L4")
+    SET(HAL_COMPONENTS adc can comp cortex crc cryp dac dcmi dfsdm dma dma2d firewall flash flash_ramfunc gpio hash i2c
+                       irda iwdg lcd lptim nand nor opamp pcd pwr qspi rcc rng rtc sai sd smartcard
+                       smbus spi sram swpmi tim tsc uart usart wwdg)
+
+    SET(HAL_REQUIRED_COMPONENTS cortex pwr rcc)
+
+    # Components that have _ex sources
+    SET(HAL_EX_COMPONENTS adc crc cryp dac flash hash i2c opamp pcd pwr rcc rtc smartcard tim uart)
+
+    # Components that have ll_ in names instead of hal_
+    SET(HAL_LL_COMPONENTS crs exti fmc lpuart sdmmc spq usb utils)
+
+    SET(HAL_PREFIX stm32l4xx_)
+
+    SET(HAL_HEADERS
+        stm32l4xx_hal.h
+        stm32l4xx_hal_def.h
+    )
+    SET(HAL_SRCS
+        stm32l4xx_hal.c
+    )
 ENDIF()
 
 IF(NOT STM32HAL_FIND_COMPONENTS)
