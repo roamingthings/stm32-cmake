@@ -14,9 +14,15 @@ IF(STM32_FAMILY STREQUAL "F4")
   "    _eccmram = .\;\n"
   "  } >CCMRAM AT> FLASH\n"
   )
+  SET(STM32_ALIGNMENT "4")
+ELSEIF(STM32_FAMILY STREQUAL "L4")
+  SET(STM32_CCRAM_DEF "")
+  SET(STM32_CCRAM_SECTION "")
+  SET(STM32_ALIGNMENT "8")
 ELSE()
   SET(STM32_CCRAM_DEF "")
   SET(STM32_CCRAM_SECTION "")
+  SET(STM32_ALIGNMENT "4")
 ENDIF()
 
 SET(STM32_LINKER_SCRIPT_TEXT
@@ -34,13 +40,13 @@ SET(STM32_LINKER_SCRIPT_TEXT
   "{\n"
   "  .isr_vector :\n"
   "  {\n"
-  "    . = ALIGN(4)\;\n"
+  "    . = ALIGN(${STM32_ALIGNMENT})\;\n"
   "    KEEP(*(.isr_vector))\n"
-  "    . = ALIGN(4)\;\n"
+  "    . = ALIGN(${STM32_ALIGNMENT})\;\n"
   "  } >FLASH\n"
   "  .text :\n"
   "  {\n"
-  "    . = ALIGN(4)\;\n"
+  "    . = ALIGN(${STM32_ALIGNMENT})\;\n"
   "    *(.text)\n"
   "    *(.text*)\n"
   "    *(.glue_7)\n"
@@ -48,15 +54,15 @@ SET(STM32_LINKER_SCRIPT_TEXT
   "    *(.eh_frame)\n"
   "    KEEP (*(.init))\n"
   "    KEEP (*(.fini))\n"
-  "    . = ALIGN(4)\;\n"
+  "    . = ALIGN(${STM32_ALIGNMENT})\;\n"
   "    _etext = .\;\n"
   "  } >FLASH\n"
   "  .rodata :\n"
   "  {\n"
-  "    . = ALIGN(4)\;\n"
+  "    . = ALIGN(${STM32_ALIGNMENT})\;\n"
   "    *(.rodata)\n"
   "    *(.rodata*)\n"
-  "    . = ALIGN(4)\;\n"
+  "    . = ALIGN(${STM32_ALIGNMENT})\;\n"
   "  } >FLASH\n"
   "  .ARM.extab   : { *(.ARM.extab* .gnu.linkonce.armextab.*) } >FLASH\n"
   "  .ARM : {\n"
@@ -87,11 +93,11 @@ SET(STM32_LINKER_SCRIPT_TEXT
   "  _sidata = LOADADDR(.data)\;\n"
   "  .data : \n"
   "  {\n"
-  "    . = ALIGN(4)\;\n"
+  "    . = ALIGN(${STM32_ALIGNMENT})\;\n"
   "    _sdata = .\;\n"
   "    *(.data)\n"
   "    *(.data*)\n"
-  "    . = ALIGN(4)\;\n"
+  "    . = ALIGN(${STM32_ALIGNMENT})\;\n"
   "    _edata = .\;\n"
   "  } >RAM AT> FLASH\n"
   "${STM32_CCRAM_SECTION}"
